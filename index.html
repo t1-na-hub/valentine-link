@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>anonymous link</title>
+
+<!-- Canva-like fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Playball&family=Montserrat:wght@800&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    perspective: 1000px;
+    background:
+        radial-gradient(circle at 20% 80%, rgba(255,0,60,0.25), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(255,0,0,0.2), transparent 40%),
+        linear-gradient(135deg, #1b0000, #400000, #800000);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    padding: 6px;
+    border-radius: 35px;
+    background: white;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    box-shadow:
+        0 0 25px white,
+        0 0 60px white,
+        inset 0 0 40px rgba(255,255,255,0.3);
+    pointer-events: none;
+    animation: neonPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% { box-shadow: 0 0 25px white, 0 0 60px white, inset 0 0 40px rgba(255,255,255,0.3); }
+    50% { box-shadow: 0 0 35px #fff, 0 0 80px #fff, inset 0 0 50px rgba(255,255,255,0.4); }
+}
+
+.floating-hearts span {
+    position: absolute;
+    color: rgba(255,0,0,0.25);
+    font-size: 20px;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100vh) translateX(0); }
+    50% { transform: translateY(50vh) translateX(5px); }
+    100% { transform: translateY(-120vh) translateX(-5px); }
+}
+
+.main-content {
+    transform: translateZ(40px);
+    padding: 40px;
+    border-radius: 25px;
+    backdrop-filter: blur(12px);
+    background: rgba(0,0,0,0.35);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.8),
+        inset 0 0 40px rgba(255,0,0,0.2);
+    animation: floatDepth 6s ease-in-out infinite;
+}
+
+@keyframes floatDepth {
+    0% { transform: translateZ(40px) translateY(0px); }
+    50% { transform: translateZ(60px) translateY(-8px); }
+    100% { transform: translateZ(40px) translateY(0px); }
+}
+
+#page1 h1 { font-family: 'Bangers', cursive; font-size: 50px; }
+#page2 { font-family: 'Playball', cursive; font-size:30px; }
+#page3 h1 { font-family: 'Montserrat', sans-serif; font-weight:800; font-size:45px; }
+
+button {
+    font-family: 'Roboto Slab', serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 15px 35px;
+    margin: 10px;
+    border-radius: 40px;
+    border: 2px solid white;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: red;
+    box-shadow: 0 0 20px red;
+    transform: scale(1.1);
+}
+
+.hidden { display: none; }
+
+#whatsappLink { cursor:pointer; color:#0f0; text-decoration:underline; margin-top:15px; }
+</style>
+</head>
+
+<body>
+<div class="floating-hearts" id="hearts"></div>
+
+<div class="main-content">
+
+<div id="page1">
+    <h1>Mikel, Will you be my Val??</h1>
+    <button id="yesBtn">YES</button>
+    <button id="noBtn">NO</button>
+</div>
+
+<div id="page2" class="hidden">
+    <h2>Select 3 Gift Preferences</h2>
+    <form id="giftForm">
+        <input type="checkbox" name="gift" value="Wine"> Wine<br>
+        <input type="checkbox" name="gift" value="Perfume"> Perfume<br>
+        <input type="checkbox" name="gift" value="Necklace"> Necklace<br>
+        <input type="checkbox" name="gift" value="Skincare"> Skincare<br>
+        <input type="checkbox" name="gift" value="Chef Session with Tina"> Chef Session with Tina<br>
+        <input type="checkbox" name="gift" value="Private Movie Date"> Private Movie Date<br><br>
+        <button type="submit">SUBMIT</button>
+    </form>
+</div>
+
+<div id="page3" class="hidden">
+    <h1>YAYYYY! I LOVE YOU BABYY</h1>
+    <p id="countdown"></p>
+    <p id="selectedGifts"></p>
+    <p id="whatsappLink"></p>
+    <button onclick="window.close()">OFFICIALLY BOOKED UNTIL FURTHER NOTICE</button>
+</div>
+
+</div>
+
+<script>
+const heartContainer = document.getElementById("hearts");
+for(let i=0;i<25;i++){
+    let span = document.createElement("span");
+    span.innerHTML = "❤";
+    span.style.left = Math.random()*100 + "vw";
+    let duration = (12 + Math.random()*10) + "s";
+    let size = (15 + Math.random()*25) + "px";
+    span.style.fontSize = size;
+    span.style.animationDuration = duration;
+    span.style.animationDelay = (Math.random()*10) + "s";
+    span.style.transform = `translateX(${Math.random()*20-10}px)`;
+    heartContainer.appendChild(span);
+}
+
+let noBtn = document.getElementById("noBtn");
+let yesBtn = document.getElementById("yesBtn");
+let noScale = 1;
+let yesScale = 1;
+noBtn.addEventListener("click", function(){
+    if(noScale > 0.6){
+        noScale -= 0.05;
+        yesScale += 0.03;
+        noBtn.style.transform = "scale(" + noScale + ")";
+        yesBtn.style.transform = "scale(" + yesScale + ")";
+    }
+});
+yesBtn.onclick = function(){
+    document.getElementById("page1").classList.add("hidden");
+    document.getElementById("page2").classList.remove("hidden");
+};
+
+let checkboxes = document.querySelectorAll('input[name="gift"]');
+checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+        let checked = document.querySelectorAll('input[name="gift"]:checked');
+        if(checked.length > 3){
+            cb.checked = false;
+            alert("You can only choose 3 gifts.");
+        }
+    });
+});
+
+document.getElementById("giftForm").onsubmit = function(e){
+    e.preventDefault();
+
+    let selected = [];
+    document.querySelectorAll('input[name="gift"]:checked')
+    .forEach(cb => selected.push(cb.value));
+
+    document.getElementById("selectedGifts").innerHTML =
+        "Selected: " + selected.join(", ");
+
+    // ✅ Pre-filled WhatsApp message
+    let hostedURL = "https://t1-na-hub.github.io/valentine-link/";
+    let message = "Mikel’s Valentine choices: " + selected.join(", ") + 
+                  "\nCheck out the Valentine page here: " + hostedURL;
+
+    window.open("https://wa.me/?text=" + encodeURIComponent(message), "_blank");
+
+    let linkEl = document.getElementById("whatsappLink");
+    linkEl.innerHTML = "Click here if WhatsApp didn't open automatically";
+    linkEl.onclick = function(){ 
+        window.open("https://wa.me/?text=" + encodeURIComponent(message), "_blank"); 
+    };
+
+    document.getElementById("page2").classList.add("hidden");
+    document.getElementById("page3").classList.remove("hidden");
+};
+
+let futureDate = new Date();
+futureDate.setDate(futureDate.getDate() + 3);
+function updateCountdown(){
+    let now = new Date();
+    let diff = futureDate - now;
+    let days = Math.floor(diff/(1000*60*60*24));
+    let hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    let minutes = Math.floor((diff%(1000*60*60))/(1000*60));
+    let seconds = Math.floor((diff%(1000*60))/1000);
+    document.getElementById("countdown").innerHTML =
+        days+"d "+hours+"h "+minutes+"m "+seconds+"s";
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+</script>
+
+</body>
+</html>
